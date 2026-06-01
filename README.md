@@ -71,7 +71,7 @@ Makefile: Contiki-NG derleme yapılandırma dosyası.
 Derleme Komutu (Z1 Mote Target):
 make TARGET=z1 udp-client udp-server
 
-##📊 Bölüm 2: Araştırma İş Parçacığı (ELF ve Donanım Araç Zinciri Analizi)
+## 📊 Bölüm 2: Araştırma İş Parçacığı (ELF ve Donanım Araç Zinciri Analizi)
 Bu bölümde, derleme sonucunda üretilen ikili (binary) bellenim imajlarının iç yapısı, GNU binutils araçları (readelf, nm) vasıtasıyla çözümlenmiş ve hedef platform mimarisine göre haritalandırılmıştır.
 
 ###2.1. Dosya Kimliği ve Mimari (ELF Header)
