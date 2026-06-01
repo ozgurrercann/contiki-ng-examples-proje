@@ -7,11 +7,11 @@ Proje, Contiki-NG işletim sistemi üzerinde **Stop-and-Wait ARQ** protokolü, *
 
 ---
 
-## 📺 Proje Tanıtım ve Cooja Simülasyon Videosu
+## 🎥 Proje Demonstrasyon Videosu
 
-Projenin Cooja simülatör ortamında çalıştırılması, protokolün mantığı, kod yapısı ve teorik açıklamaları içeren yüksek çözünürlüklü anlatım videosuna aşağıdaki bağlantıdan ulaşabilirsiniz:
+Projenin teknik detayları, kullanılan hafif (lightweight) CRC16 algoritmasının teorik altyapısı, Cooja bağımlılık yönetimi kararları ve Contiki-NG Native çekirdeği üzerindeki canlı terminal log akış sunumu için aşağıdaki videoyu izleyebilirsiniz:
 
-▶️ **[[Projenin Videosuna Ulaşmak için tıklayın]](https://youtu.be/LNhI01WiNBY)**
+👉 [BIL304 Proje Demonstrasyon Videosu (YouTube)](https://youtu.be/LNhI01WiNBY)
 
 ---
 
