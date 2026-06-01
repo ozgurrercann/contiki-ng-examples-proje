@@ -58,9 +58,9 @@ Saha uygulamalarında güncelleme işlemi başladığı andan itibaren arka plan
 
 Şekil 1'de elde edilen canlı terminal logları incelendiğinde sistemin başarısı şu parametrelerle doğrulanmıştır:
 
-1. **Ağ Yapılandırması ve Başlangıç:** Sistem `RPL Lite` yönlendirme protokolü ve `nullmac` bağlantı katmanı ile ayağa kalkmıştır. Cihaza `1800` fiziksel düğüm numarası (Node ID) ve `fd00::302:304:506:708` global IPv6 adresi başarıyla atanmıştır.
-2. **Güvenli El Sıkışma (Handshake):** `[INFO: ARQ-Test]` loglarında görüldüğü üzere hem Sunucu (Server) hem de İstemci (Client) sorunsuz şekilde senkronize olmuş ve aktarıma hazır hale gelmiştir.
-3. **Stop-and-Wait ARQ Döngüsü:** İstemcinin `Timeout/Request: Requesting block X...` çağrısının hemen ardından sunucu ilgili bloğu fırlatmış (`Sending block X to client`) ve istemci veriyi hatasız aldığını `ACK: Received block X successfully` logu ile onaylamıştır. Paket düşmesi veya sıra kayması yaşanmadan ardışık (sequential) akış başarıyla tamamlanmıştır.
+* **Ağ Yapılandırması ve Başlangıç:** Sistem `RPL Lite` yönlendirme protokolü ve `nullmac` bağlantı katmanı ile ayağa kalkmıştır. Cihaza `1800` fiziksel düğüm numarası (Node ID) ve `fd00::302:304:506:708` global IPv6 adresi başarıyla atanmıştır.
+*  **Güvenli El Sıkışma (Handshake):** `[INFO: ARQ-Test]` loglarında görüldüğü üzere hem Sunucu (Server) hem de İstemci (Client) sorunsuz şekilde senkronize olmuş ve aktarıma hazır hale gelmiştir.
+*   **Stop-and-Wait ARQ Döngüsü:** İstemcinin `Timeout/Request: Requesting block X...` çağrısının hemen ardından sunucu ilgili bloğu fırlatmış (`Sending block X to client`) ve istemci veriyi hatasız aldığını `ACK: Received block X successfully` logu ile onaylamıştır. Paket düşmesi veya sıra kayması yaşanmadan ardışık (sequential) akış başarıyla tamamlanmıştır.
 
 1. İstek ve Blok Transferi (Stop-and-Wait): İstemci cihaz sunucudan 0. bloğu ister. Blok gelip onaylanmadan (ACK fırlatılmadan) bir sonraki bloğa geçilmez. Paket yolda düşerse 2 saniyelik etimer zaman aşımı tetiklenir ve istemci aynı bloğu tekrar talep eder.
 
