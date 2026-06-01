@@ -71,6 +71,34 @@ Makefile: Contiki-NG derleme yapılandırma dosyası.
 Derleme Komutu (Z1 Mote Target):
 make TARGET=z1 udp-client udp-server
 
+##📊 Bölüm 2: Araştırma İş Parçacığı (ELF ve Donanım Araç Zinciri Analizi)
+Bu bölümde, derleme sonucunda üretilen ikili (binary) bellenim imajlarının iç yapısı, GNU binutils araçları (readelf, nm) vasıtasıyla çözümlenmiş ve hedef platform mimarisine göre haritalandırılmıştır.
+
+###2.1. Dosya Kimliği ve Mimari (ELF Header)
+msp430-readelf -h komutu ile .z1 uzantılı bellenim dosyasının başlık verileri çözümlenmiştir. Çıktılardan elde edilen verilere göre dosyanın Sihirli Sayıları (Magic Numbers) incelendiğinde, bu dosyanın doğrudan donanıma yazılmaya uygun bir ham binary (raw binary) olmadığı; sembol tablolarını (.symtab), adres haritalarını ve debug verilerini içeren ELF (Executable and Linkable Format) biçiminde olduğu kanıtlanmıştır.
+
+Dosyanın gerçek donanıma (örneğin CC1352R veya Z1 mote) yüklenebilmesi için öncelikle msp430-objcopy veya arm-none-eabi-objcopy gibi araçlar kullanılarak meta verilerinden arındırılması ve sadece makine kodlarını içeren saf .bin veya .hex formatına dönüştürülmesi gerekmektedir. Dosyanın giriş noktası (Entry Point) ise 0x3100 mimari adresi olarak tespit edilmiştir.
+
+###2.2. Bellek ve Disk Uzayı Analizi (readelf -S Çıktısı)
+readelf -S komutu ile elde edilen bellenim kesit (section) boyutları, ödev şartnamesinde belirtilen kural uyarınca hedef donanım olan Texas Instruments CC1352R SoC (352 KB Flash / 80 KB SRAM) fiziksel bellek sınırlarına haritalandırılmış ve aşağıda görselleştirilmiştir:
+
+Bellenim Bölümü (Section),Analiz Boyutu (Byte),CC1352R Fiziksel Bellek Türü,CC1352R Standart Adres Aralığı,CC1352R Bellek Doluluk Oranı (%)
+.text (Kod Alanı),38.766 Byte,Flash Bellek (ROM),0x00000000 - 0x0000976D,~%11.0 (352 KB Sınırı İçinde)
+.rodata (Sabit Veriler),13.821 Byte,Flash Bellek (ROM),0x0000976E - 0x0000CD6B,~%3.9 (352 KB Sınırı İçinde)
+.vectors (Kesme Vektörleri),64 Byte,Flash Bellek (ROM),0x00057FC0 - 0x00058000,~%0.01 (M3 Ç Redek Alanı)
+.data + .bss (Değişkenler),6.040 Byte,SRAM (Sistem RAM),0x20000000 - 0x20001797,~%7.5 (80 KB Sınırı İçinde)
+
+###2.3. Sembol Analizi (nm Çıktısı)
+msp430-nm aracı ile bellenim içerisindeki sembol tabloları incelenmiş, sistemin arka planda hangi süreçleri (process) koşturduğu analiz edilmiştir:
+
+hello_world_process (Adres: 0x114a): Uygulama katmanındaki temel süreci temsil eder.
+
+uip_process (Adres: 0x130f2): İşletim sisteminin hafif nitelikli bir ağ yığını (uIP - TCP/IP stack) barındırdığını doğrular.
+
+cc2420_process (Adres: 0x110c): Kablosuz haberleşme için CC2420 telsiz çipi sürücüsünün aktif yüklendiğini kanıtlar.
+
+Ayrıca projenin 1. aşamasında koda entegre ettiğimiz bütünlük kontrolünü sağlayan crc16_data fonksiyonu ve flash bellek yönetimini üstlenen cfs_open, cfs_write, cfs_close kütüphane sembolleri de derleme sonrası başarıyla tabloya dahil edilerek işlevselliğin sembolik seviyede kazanıldığı doğrulanmıştır.
+
 ##Bölüm 3: CC1352R Gerçekleme ve Donanım Uyarlama Analizi
 Bu bölüm, simülasyon ortamında test edilen sistemin gerçek hayattaki modern bir IoT platformu olan Texas Instruments CC1352R SimpleLink SoC donanımına taşınması durumunda yapılması gereken mimari ve donanımsal uyarlamaları analiz etmektedir.
 
