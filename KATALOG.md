@@ -54,6 +54,13 @@ Bu ayar, ağdan gelen 64 Byte'lık her blok yazıldığında flash belleğin ger
 Saha uygulamalarında güncelleme işlemi başladığı andan itibaren arka planda şu 4 aşamalı otomasyon süreci koşturulur:
 [1. ARQ Transfer] ---> [2. CRC16 Kontrol] ---> [3. Coffee CFS Kayıt] ---> [4. NVIC_SystemReset]
 <img width="937" height="1065" alt="Ekran görüntüsü 2026-06-01 223921" src="https://github.com/user-attachments/assets/1ea4fa3a-182d-42fe-8c4f-de6501220602" />
+### 🔍 Terminal Çıktısı ve Log Analizi
+
+Şekil 1'de elde edilen canlı terminal logları incelendiğinde sistemin başarısı şu parametrelerle doğrulanmıştır:
+
+1. **Ağ Yapılandırması ve Başlangıç:** Sistem `RPL Lite` yönlendirme protokolü ve `nullmac` bağlantı katmanı ile ayağa kalkmıştır. Cihaza `1800` fiziksel düğüm numarası (Node ID) ve `fd00::302:304:506:708` global IPv6 adresi başarıyla atanmıştır.
+2. **Güvenli El Sıkışma (Handshake):** `[INFO: ARQ-Test]` loglarında görüldüğü üzere hem Sunucu (Server) hem de İstemci (Client) sorunsuz şekilde senkronize olmuş ve aktarıma hazır hale gelmiştir.
+3. **Stop-and-Wait ARQ Döngüsü:** İstemcinin `Timeout/Request: Requesting block X...` çağrısının hemen ardından sunucu ilgili bloğu fırlatmış (`Sending block X to client`) ve istemci veriyi hatasız aldığını `ACK: Received block X successfully` logu ile onaylamıştır. Paket düşmesi veya sıra kayması yaşanmadan ardışık (sequential) akış başarıyla tamamlanmıştır.
 
 1. İstek ve Blok Transferi (Stop-and-Wait): İstemci cihaz sunucudan 0. bloğu ister. Blok gelip onaylanmadan (ACK fırlatılmadan) bir sonraki bloğa geçilmez. Paket yolda düşerse 2 saniyelik etimer zaman aşımı tetiklenir ve istemci aynı bloğu tekrar talep eder.
 
