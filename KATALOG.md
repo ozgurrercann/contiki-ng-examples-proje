@@ -53,6 +53,8 @@ Bu ayar, ağdan gelen 64 Byte'lık her blok yazıldığında flash belleğin ger
 ## 4. GÜNCELLEME AKIŞI VE ÇALIŞMA PRENSİBİ
 Saha uygulamalarında güncelleme işlemi başladığı andan itibaren arka planda şu 4 aşamalı otomasyon süreci koşturulur:
 [1. ARQ Transfer] ---> [2. CRC16 Kontrol] ---> [3. Coffee CFS Kayıt] ---> [4. NVIC_SystemReset]
+<img width="937" height="1065" alt="Ekran görüntüsü 2026-06-01 223921" src="https://github.com/user-attachments/assets/1ea4fa3a-182d-42fe-8c4f-de6501220602" />
+
 1. İstek ve Blok Transferi (Stop-and-Wait): İstemci cihaz sunucudan 0. bloğu ister. Blok gelip onaylanmadan (ACK fırlatılmadan) bir sonraki bloğa geçilmez. Paket yolda düşerse 2 saniyelik etimer zaman aşımı tetiklenir ve istemci aynı bloğu tekrar talep eder.
 
 2. Bütünlük Doğrulama (CRC16): Alınan her bloğun verisi lib/crc16.h ile taranır. Eğer havada bir bozulma varsa paket sessizce düşürülür, kayıt engellenir.
@@ -60,6 +62,7 @@ Saha uygulamalarında güncelleme işlemi başladığı andan itibaren arka plan
 3. Kalıcı Depolama (Coffee CFS): Doğrulanan paket verileri RAM'de biriktirilmeden, cfs_open() ve cfs_write() fonksiyonları aracılığıyla doğrudan Flash bellekteki new-firmware.bin dosyasına ardışık yazılır.
 
 4. Donanımsal Reset ve Bootloader Dallanması: Toplam 10 blok kayıpsız tamamlandığında istemci düğüm içindeki eski süreçler sonlandırılır ve NVIC_SystemReset() fonksiyonu çağrılarak 32-bit ARM Cortex çekirdeğine donanımsal reset atılır. Cihaz uyanırken Flash belleğin son sektöründeki CCFG (Customer Configuration) tablosunu okur ve ROM tabanlı entegre Bootloader program sayacını (PC) yeni bellenimin giriş adresine (0x3100) yönlendirerek sistemi yeni kodla ayağa kaldırır.
+
 ## 5. ENERJİ YÖNETİMİ VE SAHA OPTİMİZASYONU
 Endüstriyel pille çalışan düğümler için OTA güncelleme süreçleri yüksek enerji tüketir. CC1352R donanımına özel olarak tasarlanan bu yazılım mimarisinde pil ömrünü korumak adına şu önlemler alınmıştır:
 
