@@ -11,7 +11,7 @@ Proje, Contiki-NG işletim sistemi üzerinde **Stop-and-Wait ARQ** protokolü, *
 
 Projenin Cooja simülatör ortamında çalıştırılması, protokolün mantığı, kod yapısı ve teorik açıklamaları içeren yüksek çözünürlüklü anlatım videosuna aşağıdaki bağlantıdan ulaşabilirsiniz:
 
-▶️ **[ismail hocam videoyu kaydedip koyuyorum. merak etmeyin :)]**
+▶️ **[[ismail hocam videoyu kaydedip koyuyorum. merak etmeyin :)]](https://youtu.be/LNhI01WiNBY)**
 
 ---
 
